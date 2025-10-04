@@ -6,8 +6,6 @@ import com.example.demo.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,14 +23,15 @@ public class TransactionController {
         return transService.getAllTransaction();
     }
 
-//    @PostMapping("/user/{userId}")
-//    public ResponseEntity<Transaction> addTransaction(@AuthenticationPrincipal UserDetails userDetail,
-//                                                      @RequestBody Transaction transaction){
-//        int userId = transService.getUserIdFromUserDetails(userDetail);
-//
-//        boolean withInBudget = transService.addTransaction(userId,transaction);
-//         return ResponseEntity.ok(transaction1);
-//    }
+    @PostMapping("/user/{userId}")
+    public ResponseEntity<?> addTransaction(@PathVariable int userId,
+                                            @RequestBody Transaction transaction){
+
+        boolean withInBudget = transService.addTransaction(userId,transaction);
+        if (withInBudget)
+            return new ResponseEntity<>(transaction,HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("you are exceeding your budget amount");
+    }
 
     @PutMapping("/user/update-user/{userId}")
     public ResponseEntity<Transaction> updateTransaction(@PathVariable int userId,

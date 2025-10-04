@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.YearMonth;
 
 @Data
@@ -22,10 +23,13 @@ public class Budget {
     @JoinColumn(name = "userId", nullable = false)
     private Users user;
     private String category;
-    private double limitAmount;
+    private BigDecimal limitAmount;
 
     @Convert(converter = YearMonthConverter.class)
     private YearMonth month;
+
+    @Transient
+    private BigDecimal spent;
 
 }
 

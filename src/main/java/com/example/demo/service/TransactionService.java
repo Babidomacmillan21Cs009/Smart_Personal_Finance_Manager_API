@@ -8,11 +8,11 @@ import com.example.demo.repo.BudgetRepo;
 import com.example.demo.repo.TransactionRepo;
 import com.example.demo.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 
+import java.math.BigDecimal;
+import java.time.YearMonth;
 import java.util.Collections;
 import java.util.List;
 
@@ -28,28 +28,35 @@ public class TransactionService {
     @Autowired
     private BudgetRepo budgetRepo;
 
-    public int getUserIdFromUserDetails(UserDetails userDetail) {
-        Users user = userRepo.findByEmail(userDetail.getUsername())
-                .orElseThrow(() -> new RuntimeException("user not found"));
-
-        return user.getId();
-    }
 
     public List<Transaction> getAllTransaction() {
         return transRepo.findAll();
     }
 
-//    public boolean addTransaction(int userId, Transaction transaction) {
-//        Users user = userRepo.findById(userId)
-//                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-//
-//        String category = budgetRepo.findByCategory(transaction.getCategory());
-//        double amount = budgetRepo.findByLimitAmount(transaction.getAmount());
-//        double sumofAmount = budgetRepo.findBySumOf
-//
-//        transaction.setUser(user);
-//        return transRepo.save(transaction);
-//    }
+    public boolean addTransaction(int userId, Transaction transaction) {
+        Users user = userRepo.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        transaction.setUser(user);
+
+        String category = transaction.getCategory();
+        YearMonth ym = YearMonth.from(transaction.getDate());
+
+        Budget budget = budgetRepo.findByUserAndCategoryAndMonth(user,category,ym);
+
+        if(budget != null) {
+            BigDecimal spent = transRepo.sumByUserAndCategoryAndMonth(user,category,ym.getYear(),ym.getMonthValue());
+
+            if (spent == null) spent = BigDecimal.ZERO;   // handle null when no transaction
+
+            BigDecimal newTotal = spent.add(transaction.getAmount());
+            if (newTotal.compareTo(budget.getLimitAmount()) > 0){
+                return false;
+            }
+        }
+        transRepo.save(transaction);
+        return true;
+    }
 
     public Transaction updateTransaction(int userId, Transaction transaction) {
         Users user = userRepo.findById(userId).orElse(null);

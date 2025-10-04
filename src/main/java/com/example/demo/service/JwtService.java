@@ -43,12 +43,12 @@ public class JwtService {
                 .getPayload();
     }
 
-    public String extracrUsername(String token) {
+    public String extractUsername(String token) {
         return getAllClaims(token).getSubject();
     }
 
     public boolean validateToken(String token, String username) {
-        return (username.equals(extracrUsername(token)) && !isTokenExpired(token));
+        return (username.equals(extractUsername(token)) && !isTokenExpired(token));
     }
 
     private boolean isTokenExpired(String token) {
