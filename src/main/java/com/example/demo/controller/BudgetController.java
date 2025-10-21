@@ -9,6 +9,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.YearMonth;
 import java.util.List;
 
 @RestController
@@ -19,10 +20,10 @@ public class BudgetController {
     private BudgetService budgetService;
 
 
-    @GetMapping("/user/all-budgets/{month}")
+    @GetMapping("/user/all-budgets/{yearMonth}")
     public List<Budget> getAllBudgets(@AuthenticationPrincipal UserDetails userDetails,
-                                      @PathVariable int month) {
-        return budgetService.getAllBudgets(userDetails, month);
+                                      @PathVariable YearMonth yearMonth) {
+        return budgetService.getAllBudgets(userDetails, yearMonth);
     }
 
 

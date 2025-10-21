@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.YearMonth;
 import java.util.List;
 
 @Service
@@ -34,11 +35,12 @@ public class BudgetService {
         return budgetRepo.save(budget);
     }
 
-    public List<Budget> getAllBudgets(UserDetails userDetails, int month) {
+    public List<Budget> getAllBudgets(UserDetails userDetails, YearMonth yearMonth) {
         Users user = userRepo.findByUsername(userDetails.getUsername());
         if (user == null) return null;
 
-        List<Budget> budgets = budgetRepo.findByUser(user);
+
+        List<Budget> budgets = budgetRepo.findByUserAndMonth(user,yearMonth);
         for (Budget budget : budgets){
             BigDecimal spent = transRepo.sumByUserAndCategoryAndMonth(user, budget.getCategory(),
                     budget.getMonth().getYear(),budget.getMonth().getMonthValue());

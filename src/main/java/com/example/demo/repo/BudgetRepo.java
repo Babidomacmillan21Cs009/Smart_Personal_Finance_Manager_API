@@ -27,8 +27,10 @@ public interface BudgetRepo extends JpaRepository<Budget, Integer> {
                                          @Param("category") String category,
                                          @Param("month") YearMonth month);
 
-
-    List<Budget> findByUser(Users user);
+    @Query("SELECT b FROM Budget b " +
+            "WHERE b.user = :user AND " +
+            "b.month = :yearMonth")
+    List<Budget> findByUserAndMonth(@Param("user") Users user, @Param("yearMonth") YearMonth yearMonth);
 }
 
 
