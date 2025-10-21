@@ -1,8 +1,10 @@
-package com.example.demo.repo;
+package com.example.demo.service;
 
 import com.example.demo.DTO_classes.CategorySpending;
 import com.example.demo.DTO_classes.MonthlySummary;
 import com.example.demo.model.Users;
+import com.example.demo.repo.TransactionRepo;
+import com.example.demo.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;

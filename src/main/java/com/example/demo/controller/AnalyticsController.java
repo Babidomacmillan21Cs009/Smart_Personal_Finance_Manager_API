@@ -1,9 +1,10 @@
-package com.example.demo.model;
+package com.example.demo.controller;
 
 
 import com.example.demo.DTO_classes.CategorySpending;
 import com.example.demo.DTO_classes.MonthlySummary;
-import com.example.demo.repo.AnalyticsService;
+import com.example.demo.model.Users;
+import com.example.demo.service.AnalyticsService;
 import com.example.demo.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
