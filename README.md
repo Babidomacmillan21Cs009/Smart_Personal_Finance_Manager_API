@@ -32,14 +32,14 @@ This project is a backend API to help users manage their personal finances. User
    mvn spring-boot:run
 
 ## API / How to Use
-| Endpoint                 | Method | Description                                 |
-|--------------------------|--------|---------------------------------------------|
-| `/api/users/register`    | POST   | Register a new user                          |
-| `/api/users/login`       | POST   | Login and get JWT token                      |
-| `/api/transactions`      | GET    | Get all transactions for a user             |
-| `/api/transactions`      | POST   | Add a new transaction                        |
-| `/api/transactions/{id}` | PUT    | Update a transaction                         |
-| `/api/transactions/{id}` | DELETE | Delete a transaction                         |
-| `/api/summary/monthly`   | GET    | View monthly summary of income and expenses |
+| Endpoint                                                        | Method | Description                                 |
+|-----------------------------------------------------------------|--------|---------------------------------------------|
+| `/api/register`                                                 | POST   | Register a new user                         |
+| `/api/login`                                                    | POST   | Login and get JWT token                     |
+| `/api/transactions/`                                            | GET    | Get all transactions                        |
+| `/api/transactions/user/{userId}`                               | POST   | Add a new transaction                       |
+| `/api/transactions//user/update-user/{userId}`                  | PUT    | Update a transaction                        |
+| `/api/transactions//user/{userId}/delete-Transaction/{transId}` | DELETE | Delete a transaction                        |
+| `/api/analytics//monthly/{month}/{year}`                        | GET    | View monthly summary of income and expenses |
 
 
